@@ -4,11 +4,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Space Invaders</title>
 </head>
 
 <body>
+    <main>
+        <h1>Space invaders</h1>
 
+        <div id="game-intro">
+            <!--ACA VA LA PAGINA INICIAL-->
+            <button id="start-button">Start Game</button>
+            <div id="instructions">
+                <p>Use your mouse to move across the screen and click to shoot!!!!!</p>
+            </div>
+        </div>
+
+        <div id="game-container">
+            <div id="game-screen">
+
+                <div id="game-scores">
+                    <h3>Score</h3>
+                    <h3>Lives</h3>
+                    <h3>Time</h3>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="game-end">
+            <!--ACA VA LA PAGINA FINAL-->
+        </div>
+    </main>
+
+
+    <script src="./bullet.js"></script>
+    <script src="./enemie.js"></script>
+    <script src="./game.js"></script>
+    <script src="./player.js"></script>
+    <script src="./script.js"></script>
 </body>
 
 </html>
