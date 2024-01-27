@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
     <title>Space Invaders</title>
 </head>
 
@@ -11,7 +12,7 @@
     <main>
         <h1>Space invaders</h1>
 
-        <div id="game-intro">
+        <div id="game-intro" class="positioning">
             <!--ACA VA LA PAGINA INICIAL-->
             <button id="start-button">Start Game</button>
             <div id="instructions">
@@ -19,8 +20,8 @@
             </div>
         </div>
 
-        <div id="game-container">
-            <div id="game-screen">
+        <div id="game-container" class="positioning">
+            <div id="game-screen" class="positioning">
 
                 <div id="game-scores">
                     <h3>Score</h3>
@@ -31,14 +32,15 @@
             </div>
         </div>
 
-        <div id="game-end">
+        <div id="game-end" class="positioning">
+            <button id="restart-button">Restart</button>
             <!--ACA VA LA PAGINA FINAL-->
         </div>
     </main>
 
 
     <script src="./bullet.js"></script>
-    <script src="./enemie.js"></script>
+    <script src="./invader.js"></script>
     <script src="./game.js"></script>
     <script src="./player.js"></script>
     <script src="./script.js"></script>
