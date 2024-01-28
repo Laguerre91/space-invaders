@@ -1,32 +1,61 @@
 class Invader {
-    constructor(gameScreenValue) {
+    constructor(gameScreenValue, imgValue, topValue, leftValue, difficultyValue) {
 
         this.gameScreen = gameScreenValue;
-        this.top = 0;
-        this.left = 0;
-        this.width = 60;
-        this.heigth = 60;
+        this.top = topValue;
+        this.left = leftValue;
+        this.difficulty = difficultyValue
+
+        this.dimensions = {
+            width: 60,
+            height: 50
+        }
+
+
         this.element = document.createElement('img');
 
-        this.element.src = "image";
+        this.element.src = imgValue;
         this.element.style.position = 'absolute'
-        this.element.style.width = `${this.width}px`
-        this.element.style.heigth = `${this.heigth}px`
+        this.element.style.width = `${this.dimensions.width}px`
+        this.element.style.height = `${this.dimensions.height}px`
         this.element.style.left = `${this.left}px`
         this.element.style.top = `${this.top}px`
 
         this.gameScreen.appendChild(this.element)
     }
 
-    updatePosition() {
+    moveInvader() {
+
+        let moveDistance = 1.5;
+        let moveY = this.top
+
+        this.left += moveDistance;
+
+        if (this.left < 0 || this.left + this.dimensions.width > this.gameScreen.clientWidth) {
+            this.left = -1.5
+            this.top = moveY + 70
+
+        }
+
+        this.updateInvaderPosition();
 
     }
 
-    move() {
+    gravity() {
+        this.top -= this.difficulty
+        this.updateInvaderPosition()
 
     }
+
 
     shoot() {
 
+    }
+
+
+    updateInvaderPosition() {
+
+        this.element.style.left = `${this.left}px`
+        this.element.style.top = `${this.top}px`
     }
 }

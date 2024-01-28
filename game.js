@@ -6,12 +6,22 @@ class Game {
 
         this.player = new Player(
             this.gameScreen,
-            "./img/spaceship.png"
+            "./img/spaceship.png",
         );
+
+        this.invader = [
+            new Invader(this.gameScreen, "./img/invader.png", 50, 100, 3),
+            new Invader(this.gameScreen, "./img/invader.png", 50, 235, 3),
+            new Invader(this.gameScreen, "./img/invader.png", 50, 370, 3),
+            new Invader(this.gameScreen, "./img/invader.png", 50, 505, 3),
+            new Invader(this.gameScreen, "./img/invader.png", 50, 640, 3)
+        ];
+
+        this.direction = 1;
 
         this.screen = {
             height: 600,
-            width: 600,
+            width: 800,
             score: 0,
             lives: 3,
             gameIsOver: false
@@ -19,7 +29,6 @@ class Game {
 
 
         this.bullets = [];
-        this.invaders = [];
 
         this.intervalId;
         this.gameLoopFrequency = Math.round(1000 / 60);
@@ -43,6 +52,7 @@ class Game {
         }, this.gameLoopFrequency)
 
         window.addEventListener("mousemove", this.handleMouseMove.bind(this))
+
     }
 
     gameLoop() {
@@ -58,7 +68,10 @@ class Game {
 
     update() {
         this.player.move(this.mouseX);
+
+        this.invader.forEach(invader => invader.moveInvader());
     }
+
 
     setMouseX(mouseX) {
         this.mouseX = mouseX

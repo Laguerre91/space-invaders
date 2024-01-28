@@ -41,7 +41,6 @@ class Player {
 
 
     updatePosition() {
-
         console.log("Se mueveee")
         this.element.style.left = `${this.dimensions.left}px`
     }
