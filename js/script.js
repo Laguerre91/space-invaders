@@ -1,4 +1,6 @@
 window.onload = function () {
+
+
     const startButton = document.getElementById("start-button");
     const restartButton = document.getElementById("restart-button");
     let game;
@@ -12,12 +14,11 @@ window.onload = function () {
     }
 
     function startGame() {
-        console.log("start game");
         game = new Game();
-
         game.start();
+        window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("click", handleMouseClick);
 
-        window.addEventListener("mousemove", handleMouseMove)
     }
 
     function restartGame() {
@@ -28,9 +29,7 @@ window.onload = function () {
         if (game) {
             const mouseX = event.clientX
             game.setMouseX(mouseX)
+            game.player.shoot(mouseX);
         }
     }
-
-
-    window.addEventListener("mousemove", handleMouseMove)
 }
