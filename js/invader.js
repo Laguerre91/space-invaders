@@ -40,22 +40,25 @@ class Invader {
         this.position.left += this.invaderVel.left
         this.position.top += this.invaderVel.top
 
-        // if (this.invaders[0].position.left < 0 || this.invaders[0].position.left + this.dimensions.width > this.gameScreen.clientWidth) {
-        //     this.invaderVel.left *= -1
-        // }
-        // if (this.invaders[this.invaders.length - 1].position.left < 0 || this.invaders[this.invaders.length - 1].position.left + this.dimensions.width > this.gameScreen.clientWidth) {
-        //     this.invaderVel.left *= -1
-        // }
-
-
-        if (this.position.left < 0 || this.position.left + this.dimensions.width > this.gameScreen.clientWidth) {
-            this.invaderVel.left *= -1
-        }
     }
+
+    hitWall() {
+        return this.position.left < 0 || this.position.left + this.dimensions.width > this.gameScreen.clientWidth;
+    }
+
+    changeDirection() {
+        this.invaderVel.left *= -1;
+    }
+
 
     updatePosition() {
         this.element.style.left = `${this.position.left}px`
         this.element.style.top = `${this.position.top}px`
+    }
+
+    reachedBottom() {
+        const bottom = this.gameScreen.clientHeight - this.dimensions.height
+        return this.position.top >= bottom
     }
 
     didCollide(bullet) {

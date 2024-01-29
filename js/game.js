@@ -11,46 +11,47 @@ class Game {
             "./img/spaceship.png",
         );
 
-        this.invaders = [
-            new Invader(this.gameScreen, "./img/invader.png", 50, 100,),
-            new Invader(this.gameScreen, "./img/invader.png", 50, 235,),
-            new Invader(this.gameScreen, "./img/invader.png", 50, 370,),
-            new Invader(this.gameScreen, "./img/invader.png", 50, 505,),
-            new Invader(this.gameScreen, "./img/invader.png", 50, 640,)
-        ];
+        this.invaders = []
+        this.army = []
+        this.bullets = []
 
-        this.screen = {
+        this.gameSize = {
             height: 600,
-            width: 800,
-            score: 0,
-            lives: 3,
+            width: 1000,
         }
 
-        this.gameIsOver = false
-
-        this.bullets = [];
+        this.gameStats = {
+            score: 0,
+            lives: 3,
+            isOver: false
+        }
 
         this.gameIntervalId
         this.gameLoopFrequency = Math.round(1000 / 60);
     }
 
     start() {
-
         this.setGameDimensions()
         this.setGameVisibility()
+        this.setEventListeners()
+        this.createInvaders(invadersData)
         this.startGameLoop()
+    }
 
+    setEventListeners() {
         window.addEventListener("mousemove", this.handleMouseMove.bind(this))
+        window.addEventListener("click", this.handleMouseClick(this));
     }
 
     setGameDimensions() {
-        this.gameScreen.style.height = `${this.screen.height}px`;
-        this.gameScreen.style.width = `${this.screen.width}px`;
+        this.gameScreen.style.height = `${this.gameSize.height}px`
+        this.gameScreen.style.width = `${this.gameSize.width}px`
     }
 
     setGameVisibility() {
-        this.startScreen.style.display = "none";
-        this.gameScreen.style.display = "block";
+        this.startScreen.style.display = "none"
+        this.gameScreen.style.display = "block"
+        this.endScreen.style.display = "block"
     }
 
     startGameLoop() {
@@ -58,34 +59,40 @@ class Game {
     }
 
     gameLoop() {
-
         this.updateAll()
+        this.checkBottomReach()
+        this.checkWallReach()
+        this.checkBulletCollision()
+    }
 
-        if (this.gameIsOver) {
-            clearInterval(this.gameIntervalId)
+    checkBottomReach() {
+
+        const invadersReachedBottom = this.invaders.some(invader => invader.reachedBottom())
+
+        if (invadersReachedBottom) {
+
             this.endGame()
         }
     }
 
-    updateAll() {
-        this.player.move();
+    checkWallReach() {
+        const invadersHitWall = this.invaders.some(invader => invader.hitWall());
 
-        this.invaders.forEach(invader => invader.move());
-
-        this.bullets.forEach(bullet => {
-            bullet.move();
-            this.invaders.forEach(invader => {
-                if (invader.didCollide(bullet)) {
-
-
-
-                }
-            });
-        });
+        if (invadersHitWall) {
+            this.invaders.forEach(invader => invader.changeDirection());
+        }
     }
 
-    endGame() {
-
+    createInvaders(invadersData) {
+        invadersData.forEach(data => {
+            const invader = new Invader(
+                this.gameScreen,
+                "./img/invader.png",
+                data.top,
+                data.left
+            );
+            this.invaders.push(invader);
+        });
     }
 
     handleMouseMove(event) {
@@ -94,5 +101,26 @@ class Game {
             this.player.move(mouseX);
         }
     }
+
+    handleMouseClick(event) {
+        // if (this.player) {
+        //     Game.player.shoot(event.clientX)
+        // }
+    }
+
+    updateAll() {
+        this.player.move();
+        this.invaders.forEach(invader => invader.move());
+        this.bullets.forEach(bullet => bullet.move())
+    }
+
+    endGame() {
+        this.gameStats.isOver = true
+        clearInterval(this.gameIntervalId)
+    }
+
 }
+
+
+
 
