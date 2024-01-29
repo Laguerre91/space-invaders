@@ -44,14 +44,6 @@ class Player {
 
     }
 
-    shoot() {
-
-        const bullet = new Bullet(this.gameScreen, this.position.left + this.dimensions.width / 2, this.position.top);
-        this.gameScreen.appendChild(bullet.element);
-        game.bullets.push(bullet);
-
-    }
-
 
     updatePosition() {
 

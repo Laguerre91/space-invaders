@@ -12,7 +12,6 @@ class Game {
         );
 
         this.invaders = []
-        this.army = []
         this.bullets = []
 
         this.gameSize = {
@@ -40,7 +39,7 @@ class Game {
 
     setEventListeners() {
         window.addEventListener("mousemove", this.handleMouseMove.bind(this))
-        window.addEventListener("click", this.handleMouseClick(this));
+        window.addEventListener("click", this.handleMouseClick.bind(this));
     }
 
     setGameDimensions() {
@@ -95,6 +94,12 @@ class Game {
         });
     }
 
+    createBullets(x, y) {
+
+        const bullet = new Bullet(this.gameScreen, "./img/laser.png", x, y)
+        this.bullets.push(bullet)
+    }
+
     handleMouseMove(event) {
         if (this.player) {
             const mouseX = event.clientX;
@@ -103,9 +108,9 @@ class Game {
     }
 
     handleMouseClick(event) {
-        // if (this.player) {
-        //     Game.player.shoot(event.clientX)
-        // }
+        if (this.player) {
+            this.createBullets(event.clientX, this.player.getPosition().top)
+        }
     }
 
     updateAll() {

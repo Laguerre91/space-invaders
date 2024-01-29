@@ -15,7 +15,7 @@ class Invader {
 
         this.invaderVel = {
             left: 1,
-            top: 0.2
+            top: 0.1
         }
 
         this.element = document.createElement('img');
