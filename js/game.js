@@ -27,6 +27,7 @@ class Game {
 
         this.gameIntervalId
         this.gameLoopFrequency = Math.round(1000 / 60);
+
     }
 
     start() {
@@ -50,7 +51,7 @@ class Game {
     setGameVisibility() {
         this.startScreen.style.display = "none"
         this.gameScreen.style.display = "block"
-        this.endScreen.style.display = "block"
+        this.endScreen.style.display = "none"
     }
 
     startGameLoop() {
@@ -61,7 +62,6 @@ class Game {
         this.updateAll()
         this.checkBottomReach()
         this.checkWallReach()
-        this.checkBulletCollision()
     }
 
     checkBottomReach() {
@@ -94,12 +94,6 @@ class Game {
         });
     }
 
-    createBullets(x, y) {
-
-        const bullet = new Bullet(this.gameScreen, "./img/laser.png", x, y)
-        this.bullets.push(bullet)
-    }
-
     handleMouseMove(event) {
         if (this.player) {
             const mouseX = event.clientX;
@@ -108,20 +102,61 @@ class Game {
     }
 
     handleMouseClick(event) {
+
         if (this.player) {
-            this.createBullets(event.clientX, this.player.getPosition().top)
+            const mouseX = event.clientX
+
+            this.shoot(mouseX)
         }
+    }
+
+    shoot(mouseX) {
+        this.createBullet(mouseX)
+    }
+
+    createBullet() {
+        const bullet = new Bullet(this.gameScreen, player.position.left, player.position.top)
+        this.bullets.push(bullet)
     }
 
     updateAll() {
         this.player.move();
-        this.invaders.forEach(invader => invader.move());
-        this.bullets.forEach(bullet => bullet.move())
+        this.invaders.forEach(invader => invader.move())
+
+        this.bullets.forEach(bullet => {
+            bullet.move()
+            this.checkInvaderCollisions(bullet)
+        })
+
+    }
+
+    checkInvaderCollisions(bullet) {
+        this.invaders.forEach((invader, invaderIndex) => {
+            if (this.checkCollision(invader, bullet)) {
+                invader.remove();
+                bullet.remove();
+                this.gameStats.score += 10;
+                this.invaders.splice(invaderIndex, 1);
+            }
+        });
+    }
+
+    checkCollision(invader, bullet) {
+        return (
+            bullet.position.top < invader.position.top + invader.dimensions.height &&
+            bullet.position.top + bullet.dimensions.height > invader.position.top &&
+            bullet.position.left < invader.position.left + invader.dimensions.width &&
+            bullet.position.left + bullet.dimensions.width > invader.position.left
+        )
     }
 
     endGame() {
         this.gameStats.isOver = true
+        this.gameScreen.style.display = "none"
+        this.endScreen.style.display = "block"
+
         clearInterval(this.gameIntervalId)
+
     }
 
 }

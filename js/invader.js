@@ -5,7 +5,9 @@ class Invader {
 
         this.position = {
             top: topValue,
-            left: leftValue
+            // bottom: topValue - this.dimensions.height,
+            left: leftValue,
+            // right: leftValue + this.dimensions.width
         }
 
         this.dimensions = {
@@ -61,7 +63,4 @@ class Invader {
         return this.position.top >= bottom
     }
 
-    didCollide(bullet) {
-
-    }
 }

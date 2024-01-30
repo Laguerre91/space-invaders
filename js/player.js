@@ -13,6 +13,8 @@ class Player {
             top: 500,
         }
 
+        this.bullets = []
+
         this.element = document.createElement('img');
 
         this.element.src = imgSrcValue;
@@ -30,11 +32,13 @@ class Player {
         this.updatePosition()
     }
 
+
     calculatePosition(mouseX) {
 
         const offsetX = this.dimensions.width / 2;
         const gameRect = this.gameScreen.getBoundingClientRect();
         this.position.left = mouseX - gameRect.left - offsetX;
+
         if (this.position.left < 0) {
             this.position.left = 0;
         }
@@ -44,10 +48,8 @@ class Player {
 
     }
 
-
     updatePosition() {
-
         this.element.style.left = `${this.position.left}px`
-
     }
+
 }

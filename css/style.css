@@ -16,3 +16,8 @@
 h1 {
     text-align: center;
 }
+
+#game-screen,
+#game-end {
+    display: none;
+}

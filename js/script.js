@@ -26,10 +26,17 @@ window.onload = function () {
     }
 
     function handleMouseMove(event) {
+        // if (game) {
+        //     const mouseX = event.clientX
+        //     game.setMouseX(mouseX)
+        // }
+    }
+
+    function handleMouseClick(event) {
         if (game) {
             const mouseX = event.clientX
-            game.setMouseX(mouseX)
             game.player.shoot(mouseX);
         }
     }
+
 }

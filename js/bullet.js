@@ -1,5 +1,6 @@
 class Bullet {
-    constructor(gameScreenValue, imgSrcValue, startX, startY) {
+    constructor(gameScreenValue, startX, startY) {
+
         this.gameScreen = gameScreenValue;
 
         this.dimensions = {
@@ -9,17 +10,22 @@ class Bullet {
 
         this.position = {
             left: startX,
-            top: startY,
+            top: startY
         }
 
-        this.element = document.createElement('img');
+        this.direction = {
+            x: 0,
+            y: -1,
+        }
 
-        this.element.src = imgSrcValue
+        this.element = document.createElement('div');
+
         this.element.style.position = "absolute";
         this.element.style.width = `${this.dimensions.width}px`;
         this.element.style.height = `${this.dimensions.height}px`;
         this.element.style.left = `${this.position.left}px`;
         this.element.style.top = `${this.position.top}px`;
+        this.element.style.backgroundColor = 'red'
 
         this.speed = 5;
 
@@ -27,18 +33,19 @@ class Bullet {
     }
 
     move() {
-        this.position.top -= 5
+        this.position.top -= this.speed
         this.element.style.top = `${this.position.top}px`
         if (this.position.top < 0) {
             this.remove()
         }
     }
 
+    updatePosition() {
+        this.element.style.top = `${this.position.top}px`
+    }
+
     remove() {
         this.element.remove()
     }
 
-    updatePosition() {
-
-    }
 }
