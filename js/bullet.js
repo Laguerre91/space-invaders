@@ -35,6 +35,7 @@ class Bullet {
     move() {
         this.position.top -= this.speed
         this.element.style.top = `${this.position.top}px`
+
         if (this.position.top < 0) {
             this.remove()
         }
@@ -43,6 +44,7 @@ class Bullet {
     updatePosition() {
         this.element.style.top = `${this.position.top}px`
     }
+
 
     remove() {
         this.element.remove()

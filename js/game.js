@@ -105,17 +105,16 @@ class Game {
 
         if (this.player) {
             const mouseX = event.clientX
-
             this.shoot(mouseX)
         }
     }
 
-    shoot(mouseX) {
-        this.createBullet(mouseX)
+    shoot() {
+        this.createBullet()
     }
 
     createBullet() {
-        const bullet = new Bullet(this.gameScreen, player.position.left, player.position.top)
+        const bullet = new Bullet(this.gameScreen, event.clientX - this.player.dimensions.width, this.player.position.top)
         this.bullets.push(bullet)
     }
 
@@ -131,14 +130,23 @@ class Game {
     }
 
     checkInvaderCollisions(bullet) {
-        this.invaders.forEach((invader, invaderIndex) => {
+        for (let i = this.invaders.length - 1; i >= 0; i--) {
+            const invader = this.invaders[i];
+
             if (this.checkCollision(invader, bullet)) {
-                invader.remove();
-                bullet.remove();
                 this.gameStats.score += 10;
-                this.invaders.splice(invaderIndex, 1);
+                console.log("10 points");
+
+                this.invaders.splice(i, 1);
+                this.bullets.remove()
+
+                break;
             }
-        });
+        }
+    }
+
+    remove() {
+
     }
 
     checkCollision(invader, bullet) {

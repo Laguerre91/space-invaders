@@ -9,7 +9,7 @@ class Player {
         }
 
         this.position = {
-            left: 250,
+            left: 450,
             top: 500,
         }
 
