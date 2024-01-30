@@ -5,9 +5,7 @@ class Invader {
 
         this.position = {
             top: topValue,
-            // bottom: topValue - this.dimensions.height,
             left: leftValue,
-            // right: leftValue + this.dimensions.width
         }
 
         this.dimensions = {
