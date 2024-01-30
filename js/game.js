@@ -145,9 +145,9 @@ class Game {
         }
     }
 
-    remove() {
+    // remove() {
 
-    }
+    // }
 
     checkCollision(invader, bullet) {
         return (
