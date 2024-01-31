@@ -22,7 +22,7 @@ h1 {
     display: none;
 }
 
-/* #game-screen {
-    background-image: url(../img/invader.png);
+#game-screen {
+    background-image: url(../img/oak-wooden-textured-design-background.jpeg);
     background-size: cover;
-} */
+}
