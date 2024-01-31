@@ -8,7 +8,7 @@ class Game {
         this.scoreScreen = document.querySelector('#score');
         this.timeScreen = document.querySelector('#time');
         this.livesScreen = document.querySelector('#lives');
-        this.endTitleScreen = document.querySelector('#game-end-title')
+        this.endTitleScreen = document.querySelector('#game-end-title');
 
 
         this.player = new Player(
@@ -25,6 +25,7 @@ class Game {
         }
 
         this.gameStats = {
+            timeRemaining: 15,
             score: 0,
             lives: 3,
             isOver: false
@@ -39,13 +40,16 @@ class Game {
         this.setGameDimensions()
         this.setGameVisibility()
         this.setEventListeners()
+
+        this.startCountdown()  //Provisional, para el timer
+
         this.createInvaders(invadersData)
         this.startGameLoop()
     }
 
     setEventListeners() {
-        window.addEventListener("mousemove", this.handleMouseMove.bind(this))
-        window.addEventListener("click", this.handleMouseClick.bind(this));
+        this.gameScreen.addEventListener("mousemove", this.handleMouseMove.bind(this))
+        this.gameScreen.addEventListener("click", this.handleMouseClick.bind(this));
     }
 
     setGameDimensions() {
@@ -74,6 +78,21 @@ class Game {
 
         this.scoreScreen.innerHTML = this.gameStats.score
 
+    }
+
+    // Esto es del timer, might delete later
+    startCountdown() {
+        const countdownTimer = new CountdownTimer(
+            this.gameStats.timeRemaining,
+            (remainingTime) => {
+                const minutes = Math.floor(remainingTime / 60).toString().padStart(2, "0");
+                const seconds = (remainingTime % 60).toString().padStart(2, "0");
+                this.timeScreen.innerHTML = `${minutes}:${seconds}`;
+            },
+            () => {
+                this.gameOver();
+            }
+        );
     }
 
     checkBottomReach() {
@@ -121,13 +140,33 @@ class Game {
         }
     }
 
-    shoot() {
-        this.createBullet()
-    }
-
     createBullet() {
         const bullet = new Bullet(this.gameScreen, event.clientX - this.player.dimensions.width, this.player.position.top)
         this.bullets.push(bullet)
+    }
+
+    calculatePositionBullet(mouseX) {
+        const offsetX = player.dimensions.width / 2;
+
+        const gameRect = this.gameScreen.getBoundingClientRect();
+
+        player.position.left = mouseX - gameRect.left - offsetX;
+
+        if (player.position.left < 0) {
+            player.position.left = 0;
+        }
+
+        if (player.position.left > player.gameScreen.offsetWidth - player.dimensions.width) {
+            player.position.left = player.gameScreen.offsetWidth - player.dimensions.width;
+        }
+
+        if (player.position.top < 0) {
+            player.position.top = 0;
+        }
+    }
+
+    shoot() {
+        this.createBullet()
     }
 
     updateAll() {
@@ -156,7 +195,6 @@ class Game {
                 this.removeBullet(bullet)
                 this.removeInvader(invader)
 
-                // console.log(`${this.gameStats.score} total points!`)
             }
 
             if (this.invaders.length === 0) {
@@ -215,7 +253,3 @@ class Game {
     }
 
 }
-
-
-
-
