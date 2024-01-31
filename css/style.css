@@ -1,6 +1,11 @@
+body {
+    background-image: url(../img/background-test.jpg);
+    background-size: cover;
+}
+
 .positioning {
     position: relative;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     height: 600px;
     width: 1000px;
     left: 0;
