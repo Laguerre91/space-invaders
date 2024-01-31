@@ -1,5 +1,5 @@
 class Invader {
-    constructor(gameScreenValue, imgValue, topValue, leftValue) {
+    constructor(gameScreenValue, imgValue, topValue, leftValue, topVel, leftVel) {
 
         this.gameScreen = gameScreenValue;
 
@@ -13,9 +13,9 @@ class Invader {
             height: 50
         }
 
-        this.invaderVel = {
-            left: 1,
-            top: 0.1
+        this.velocity = {
+            topVel: topVel,
+            leftVel: leftVel
         }
 
         this.element = document.createElement('img');
@@ -37,8 +37,8 @@ class Invader {
 
     calculatePosition() {
 
-        this.position.left += this.invaderVel.left
-        this.position.top += this.invaderVel.top
+        this.position.left += this.velocity.leftVel
+        this.position.top += this.velocity.topVel
 
     }
 
@@ -47,7 +47,7 @@ class Invader {
     }
 
     changeDirection() {
-        this.invaderVel.left *= -1;
+        this.velocity.leftVel *= -1;
     }
 
 

@@ -9,6 +9,7 @@ class Game {
         this.timeScreen = document.querySelector('#time');
         this.livesScreen = document.querySelector('#lives');
         this.endTitleScreen = document.querySelector('#game-end-title');
+        this.totalScores = document.querySelector('#total-scores')
 
 
         this.player = new Player(
@@ -25,7 +26,7 @@ class Game {
         }
 
         this.gameStats = {
-            timeRemaining: 60,
+            timeRemaining: 6000,
             score: 0,
             lives: 3,
             isOver: false
@@ -33,6 +34,10 @@ class Game {
 
         this.gameIntervalId
         this.gameLoopFrequency = Math.round(1000 / 60);
+        this.topVelCounter = 0
+        this.leftVelCounter = 0
+
+        console.log(this.leftVelCounter)
 
     }
 
@@ -87,7 +92,7 @@ class Game {
                 this.timeScreen.innerHTML = `${minutes}:${seconds}`;
             },
             () => {
-                this.gameOver();
+                this.endView()
             }
         );
     }
@@ -98,7 +103,7 @@ class Game {
 
         if (invadersReachedBottom) {
 
-            this.gameOver()
+            this.endView()
         }
     }
 
@@ -116,7 +121,9 @@ class Game {
                 this.gameScreen,
                 "./img/invader.png",
                 data.top,
-                data.left
+                data.left,
+                data.topVel,
+                data.leftVel,
             );
             this.invaders.push(invader);
         });
@@ -150,7 +157,6 @@ class Game {
     }
 
     updateAll() {
-        // this.player.move();
         this.invaders.forEach(invader => invader.move())
 
         this.bullets.forEach(bullet => {
@@ -160,6 +166,7 @@ class Game {
 
     }
 
+
     checkInvaderCollisions(bullet) {
 
         for (let i = this.invaders.length - 1; i >= 0; i--) {
@@ -167,6 +174,7 @@ class Game {
             let invader = this.invaders[i];
 
             if (this.checkCollision(invader, bullet)) {
+
                 this.gameStats.score += 10;
                 console.log("10 points");
 
@@ -177,10 +185,23 @@ class Game {
 
             }
 
-            if (this.invaders.length === 0) {
-                this.youWin()
+            if (this.invaders.length === 2) {
+                this.createMoreEnemies(newInvadersData)
             }
         }
+    }
+
+    updateVelocity(newInvadersData) {
+
+        for (let i = 0; i < newInvadersData.length; i++) {
+
+            newInvadersData.topVel += this.topVelCounter;
+            newInvadersData.leftVel += this.leftVelCounter;
+            console.log("updateVelocity works");
+
+        }
+
+
     }
 
     removeInvader(invader) {
@@ -190,6 +211,23 @@ class Game {
             this.invaders.splice(invaderIndex, 1);
         }
 
+    }
+
+    createMoreEnemies() {
+        newInvadersData.forEach(data => {
+            const invader = new Invader(
+                this.gameScreen,
+                "./img/invader.png",
+                data.top,
+                data.left,
+                data.topVel,
+                data.leftVel,
+            )
+            this.updateVelocity(newInvadersData)
+            this.invaders.push(invader)
+        })
+
+        this.gameStats.timeRemaining += 10
     }
 
     removeBullet(bullet) {
@@ -209,27 +247,17 @@ class Game {
         )
     }
 
-    gameOver() {
+    endView() {
         this.gameStats.isOver = true
         this.gameScreen.style.display = "none"
         this.endScreen.style.display = "flex"
 
-        this.endTitleScreen.innerHTML = "GAME OVER. YOU LOSE :("
+        this.endTitleScreen.innerHTML = "GAME OVER. TRY AGAIN!"
+        this.totalScores.innerHTML = `You made ${this.gameStats.score} points`
+        this.totalScores.style.fontSize = '2em'
 
         clearInterval(this.gameIntervalId)
-        console.log("you lose")
 
-    }
-
-    youWin() {
-
-        this.endTitleScreen.innerHTML = "YOU WIN!!!"
-        this.gameStats.isOver = true
-        this.gameScreen.style.display = "none"
-        this.endScreen.style.display = "flex"
-
-        clearInterval(this.gameIntervalId)
-        console.log("you win")
     }
 
 }
