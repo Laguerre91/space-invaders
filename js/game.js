@@ -25,7 +25,7 @@ class Game {
         }
 
         this.gameStats = {
-            timeRemaining: 15,
+            timeRemaining: 60,
             score: 0,
             lives: 3,
             isOver: false
@@ -40,9 +40,7 @@ class Game {
         this.setGameDimensions()
         this.setGameVisibility()
         this.setEventListeners()
-
-        this.startCountdown()  //Provisional, para el timer
-
+        this.startCountdown()
         this.createInvaders(invadersData)
         this.startGameLoop()
     }
@@ -80,7 +78,6 @@ class Game {
 
     }
 
-    // Esto es del timer, might delete later
     startCountdown() {
         const countdownTimer = new CountdownTimer(
             this.gameStats.timeRemaining,
@@ -141,36 +138,19 @@ class Game {
     }
 
     createBullet() {
-        const bullet = new Bullet(this.gameScreen, event.clientX - this.player.dimensions.width, this.player.position.top)
+
+        const bullet = new Bullet(this.gameScreen, this.player.position.left + (this.player.dimensions.width / 2), this.player.position.top)
+
         this.bullets.push(bullet)
     }
 
-    calculatePositionBullet(mouseX) {
-        const offsetX = player.dimensions.width / 2;
-
-        const gameRect = this.gameScreen.getBoundingClientRect();
-
-        player.position.left = mouseX - gameRect.left - offsetX;
-
-        if (player.position.left < 0) {
-            player.position.left = 0;
-        }
-
-        if (player.position.left > player.gameScreen.offsetWidth - player.dimensions.width) {
-            player.position.left = player.gameScreen.offsetWidth - player.dimensions.width;
-        }
-
-        if (player.position.top < 0) {
-            player.position.top = 0;
-        }
-    }
 
     shoot() {
         this.createBullet()
     }
 
     updateAll() {
-        this.player.move();
+        // this.player.move();
         this.invaders.forEach(invader => invader.move())
 
         this.bullets.forEach(bullet => {

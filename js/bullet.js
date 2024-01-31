@@ -50,26 +50,18 @@ class Bullet {
         this.element.remove()
     }
 
-    // calculatePosition(mouseX, mouseY) {
-    //     const offsetX = this.dimensions.width / 2;
-    //     const offsetY = this.dimensions.height / 2;
+    calculatePosition(mouseX, mouseY) {
+        const offsetX = this.dimensions.width / 2;
+        const offsetY = this.dimensions.height / 2;
 
-    //     const gameRect = this.gameScreen.getBoundingClientRect();
+        const gameRect = this.gameScreen.getBoundingClientRect();
 
-    //     this.position.left = mouseX - gameRect.left - offsetX;
-    //     this.position.top = mouseY - gameRect.top - offsetY;
+        this.position.top = this.gameScreen.player.position.top - offsetY;
 
-    //     if (this.position.left < 0) {
-    //         this.position.left = 0;
-    //     }
-
-    //     if (this.position.left > this.gameScreen.offsetWidth - this.dimensions.width) {
-    //         this.position.left = this.gameScreen.offsetWidth - this.dimensions.width;
-    //     }
-
-    //     if (this.position.top < 0) {
-    //         this.position.top = 0;
-    //     }
-    // }
-
+        if (this.position.top < 0) {
+            this.position.top = 0;
+        }
+    }
 }
+
+

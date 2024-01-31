@@ -34,7 +34,7 @@ class Player {
 
 
     calculatePosition(mouseX) {
-
+        console.log("---", mouseX)
         const offsetX = this.dimensions.width / 2;
         const gameRect = this.gameScreen.getBoundingClientRect();
         this.position.left = mouseX - gameRect.left - offsetX;
@@ -49,6 +49,7 @@ class Player {
     }
 
     updatePosition() {
+
         this.element.style.left = `${this.position.left}px`
     }
 

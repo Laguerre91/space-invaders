@@ -21,3 +21,8 @@ h1 {
 #game-end {
     display: none;
 }
+
+/* #game-screen {
+    background-image: url(../img/invader.png);
+    background-size: cover;
+} */
