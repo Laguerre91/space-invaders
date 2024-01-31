@@ -212,9 +212,9 @@ class Game {
     gameOver() {
         this.gameStats.isOver = true
         this.gameScreen.style.display = "none"
-        this.endScreen.style.display = "block"
+        this.endScreen.style.display = "flex"
 
-        this.endTitleScreen.innerHTML = "GAME OVER. YOU LOSE"
+        this.endTitleScreen.innerHTML = "GAME OVER. YOU LOSE :("
 
         clearInterval(this.gameIntervalId)
         console.log("you lose")
@@ -226,7 +226,7 @@ class Game {
         this.endTitleScreen.innerHTML = "YOU WIN!!!"
         this.gameStats.isOver = true
         this.gameScreen.style.display = "none"
-        this.endScreen.style.display = "block"
+        this.endScreen.style.display = "flex"
 
         clearInterval(this.gameIntervalId)
         console.log("you win")

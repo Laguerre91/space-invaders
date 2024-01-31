@@ -5,6 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
+
+    <!--GOOGLE FONTS-->
+    <!--TITLE FONT-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sixtyfour&display=swap" rel="stylesheet">
+    <!--REST OF THE GAME FONT-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500&display=swap" rel="stylesheet">
+
     <title>Space Invaders</title>
 </head>
 
@@ -12,9 +23,9 @@
     <main>
         <h1>Ironhack Invaders</h1>
 
-        <div id="game-intro" class="positioning">
+        <div id="game-intro" class="positioning positioning-game-screens">
             <!--ACA VA LA PAGINA INICIAL-->
-            <button id="start-button">Start Game</button>
+            <button id="start-button" class="shadow__btn">Start Game</button>
             <div id="instructions">
                 <p>Use your mouse to move across the screen and click to shoot!!!!!</p>
             </div>
@@ -30,9 +41,9 @@
 
         </div>
 
-        <div id="game-end" class="positioning">
+        <div id="game-end" class="positioning positioning-game-screens">
             <h2 id="game-end-title"></h2>
-            <button id="restart-button">Restart</button>
+            <button id="restart-button" class="shadow__btn">Restart</button>
             <!--ACA VA LA PAGINA FINAL-->
         </div>
     </main>
