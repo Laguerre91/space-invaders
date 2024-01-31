@@ -13,7 +13,7 @@ class Game {
 
         this.player = new Player(
             this.gameScreen,
-            "./img/spaceship.png",
+            "./img/popino.png",
         );
 
         this.invaders = []
