@@ -9,16 +9,35 @@ class Game {
         this.timeScreen = document.querySelector('#time');
         this.livesScreen = document.querySelector('#lives');
         this.endTitleScreen = document.querySelector('#game-end-title');
-        this.totalScores = document.querySelector('#total-scores')
+        this.totalScores = document.querySelector('#total-scores');
 
+        this.backgroundMusic = document.querySelector('#background-music')
+        this.audioVolume = 0.2
+        this.backgroundMusic.volume = this.audioVolume
+
+        this.audioAlright = document.querySelector('#alright');
+        this.audioNice = document.querySelector('#nice');
+        this.audioSuperNice = document.querySelector('#super-nice');
+        this.audioGrrr = document.querySelector('#grrr');
+
+        this.audioVolumeVoices = 0.5;
+
+        this.audioAlright.volume = this.audioVolumeVoices;
+        this.audioNice.volume = this.audioVolumeVoices;
+        this.audioSuperNice.volume = this.audioVolumeVoices;
+        this.audioGrrr.volume = this.audioVolumeVoices;
+
+
+        this.frameIndex = 0
 
         this.player = new Player(
             this.gameScreen,
-            "./img/spaceship.png",
+            "./img/popino.png",
         );
 
         this.invaders = []
         this.bullets = []
+        this.bombs = []
 
         this.gameSize = {
             height: 600,
@@ -26,7 +45,7 @@ class Game {
         }
 
         this.gameStats = {
-            timeRemaining: 30,
+            timeRemaining: 20,
             score: 0,
             lives: 3,
             isOver: false
@@ -39,10 +58,11 @@ class Game {
     }
 
     start() {
+        this.playAlright()
         this.setGameDimensions()
         this.setGameVisibility()
         this.setEventListeners()
-        this.startCountdown()
+        this.updateTimer()
         this.createInvaders(invadersData)
         this.startGameLoop()
     }
@@ -64,32 +84,54 @@ class Game {
     }
 
     startGameLoop() {
-        this.gameIntervalId = setInterval(() => this.gameLoop(), this.gameLoopFrequency)
+        this.gameIntervalId = setInterval(() => {
+            this.gameLoop()
+        }, this.gameLoopFrequency)
+    }
+
+    updateTimer() {
+
+        this.timeScreen.innerHTML = this.gameStats.timeRemaining--
+
+        if (this.gameStats.timeRemaining < 0) {
+            this.endView()
+        }
     }
 
     gameLoop() {
         this.updateAll()
         this.checkBottomReach()
         this.checkWallReach()
-        this.updateStats()
+        this.checkBombCollision()
+        this.updateScore()
+        this.updateLives()
+        this.frameIndex++
+        if (this.frameIndex % 60 === 0) this.updateTimer()
     }
 
-    updateStats() {
+    updateScore() {
         this.scoreScreen.innerHTML = this.gameStats.score
     }
 
-    startCountdown() {
-        const countdownTimer = new CountdownTimer(
-            this.gameStats.timeRemaining,
-            (remainingTime) => {
-                const minutes = Math.floor(remainingTime / 60).toString().padStart(2, "0")
-                const seconds = (remainingTime % 60).toString().padStart(2, "0")
-                this.timeScreen.innerHTML = `${minutes}:${seconds}`
-            },
-            () => {
-                this.endView()
-            }
-        )
+    updateLives() {
+        this.checkBombCollision()
+        this.livesScreen.innerHTML = this.gameStats.lives
+    }
+
+    playAlright() {
+        this.audioAlright.play();
+    }
+
+    playNice() {
+        this.audioNice.play();
+    }
+
+    playGrrr() {
+        this.audioGrrr.play();
+    }
+
+    playSuperNice() {
+        this.audioSuperNice.play();
     }
 
     checkBottomReach() {
@@ -179,7 +221,16 @@ class Game {
 
             }
 
+            if (this.gameStats.score > 0 && this.gameStats.score % 100 === 0 && this.gameStats.score < 400) {
+                this.playNice()
+            }
+
+            if (this.gameStats.score % 100 === 0 && this.gameStats.score >= 500) {
+                this.playSuperNice()
+            }
+
             if (this.invaders.length === 2) {
+                this.gameStats.timeRemaining += 5
                 this.createMoreEnemies(newInvadersData)
                 this.updateVelocity(newInvadersData)
             }
@@ -190,7 +241,7 @@ class Game {
     updateVelocity(newInvadersData) {
 
         newInvadersData.forEach((invaderData) => {
-            invaderData.topVel += 0.2;
+            invaderData.topVel += 0.1;
             invaderData.leftVel += 0.5;
         })
 
@@ -205,11 +256,20 @@ class Game {
 
     }
 
+    removeBomb(bomb) {
+        this.gameScreen.removeChild(bomb.element)
+        const bombIndex = this.bombs.indexOf(bomb)
+        if (bombReachedBottom()) {
+            this.bombs.splice(bombIndex, 1);
+        }
+
+    }
+
     createMoreEnemies() {
         newInvadersData.forEach(data => {
             const invader = new Invader(
                 this.gameScreen,
-                "./img/invader.png",
+                data.imgSource,
                 data.top,
                 data.left,
                 data.topVel,
@@ -217,18 +277,6 @@ class Game {
             )
             this.invaders.push(invader)
         })
-
-        this.addTimeBonus(() => {
-            this.gameStats.timeRemaining += 5
-        })
-    }
-
-    addTimeBonus(callback) {
-        if (callback) {
-            callback()
-            console.log("Time bonus added!")
-            console.log(`${this.gameStats.timeRemaining}`)
-        }
     }
 
     removeBullet(bullet) {
@@ -248,6 +296,47 @@ class Game {
         )
     }
 
+
+    checkBombCollision() {
+
+        for (let i = 0; i < this.bombs.length; i++) {
+            const bomb = this.bombs[i];
+            bomb.move();
+
+            if (this.player.didCollide(bomb)) {
+
+                this.playGrrr()
+
+                bomb.element.remove();
+
+                this.bombs.splice(i, 1);
+
+                this.gameStats.lives--;
+
+                i--;
+            }
+            else if (bomb.position.top > this.gameScreen.clientHeight - bomb.dimensions.height) {
+
+                bomb.element.remove();
+                this.bombs.splice(i, 1);
+                i--;
+            }
+        }
+
+        if (this.gameStats.lives === 1) {
+            this.livesScreen.style.color = 'red'
+        }
+
+        if (this.gameStats.lives === 0) {
+            this.endView();
+        }
+
+        if (Math.random() > 0.98 && this.bombs.length < 1) {
+            this.bombs.push(new Bomb(this.gameScreen));
+        }
+    }
+
+
     endView() {
         this.gameStats.isOver = true
         this.gameScreen.style.display = "none"
@@ -256,6 +345,8 @@ class Game {
         this.endTitleScreen.innerHTML = "GAME OVER... TRY AGAIN!"
         this.totalScores.innerHTML = `You scored ${this.gameStats.score} points!`
         this.totalScores.style.fontSize = '2em'
+
+        this.playGrrr()
 
         clearInterval(this.gameIntervalId)
 

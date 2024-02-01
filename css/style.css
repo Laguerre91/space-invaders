@@ -17,6 +17,7 @@ body {
 #game-scores {
     display: flex;
     justify-content: space-around;
+    font-size: 1.4em;
 }
 
 h1 {

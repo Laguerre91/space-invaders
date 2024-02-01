@@ -21,7 +21,11 @@
 
 <body>
 
-    <audio autoplay loop src="./audio/theme-song.mp3"></audio>
+    <audio id="background-music" autoplay loop src="./audio/theme-song.mp3"></audio>
+    <audio id="alright" src="./audio/voices/alright.mp3"></audio>
+    <audio id="nice" src="./audio/voices/nice.mp3"></audio>
+    <audio id="super-nice" src="./audio/voices/supernice.mp3"></audio>
+    <audio id="grrr" src="./audio/voices/grrr.mp3"></audio>
 
     <main>
         <h1>Ironhack Invaders</h1>
@@ -38,7 +42,7 @@
 
             <div id="game-scores">
                 <h3>Score: <span id="score"></span></h3>
-                <!-- <h3>Lives: <span id="lives"></span></h3> -->
+                <h3>Lives: <span id="lives"></span></h3>
                 <h3>Time: <span id="time"></span></h3>
             </div>
 
@@ -52,7 +56,7 @@
         </div>
     </main>
 
-    <script src="./js/countdown.js"></script>
+    <script src="./js/bomb.js"></script>
     <script src="./js/data.js"></script>
     <script src="./js/bullet.js"></script>
     <script src="./js/invader.js"></script>

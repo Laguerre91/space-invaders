@@ -52,4 +52,22 @@ class Player {
         this.element.style.left = `${this.position.left}px`
     }
 
+    didCollide(bomb) {
+        const playerRect = this.element.getBoundingClientRect();
+        const bombRect = bomb.element.getBoundingClientRect();
+
+        if (
+            playerRect.left < bombRect.right &&
+            playerRect.right > bombRect.left &&
+            playerRect.top < bombRect.bottom &&
+            playerRect.bottom > bombRect.top
+        ) {
+            console.log("Crash!");
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
