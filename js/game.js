@@ -14,7 +14,7 @@ class Game {
 
         this.player = new Player(
             this.gameScreen,
-            "./img/popino.png",
+            "./img/spaceship2.png",
         );
 
         this.invaders = []
@@ -26,7 +26,7 @@ class Game {
         }
 
         this.gameStats = {
-            timeRemaining: 6000,
+            timeRemaining: 30,
             score: 0,
             lives: 3,
             isOver: false
@@ -252,8 +252,8 @@ class Game {
         this.gameScreen.style.display = "none"
         this.endScreen.style.display = "flex"
 
-        this.endTitleScreen.innerHTML = "GAME OVER. TRY AGAIN!"
-        this.totalScores.innerHTML = `You made ${this.gameStats.score} points`
+        this.endTitleScreen.innerHTML = "GAME OVER... TRY AGAIN!"
+        this.totalScores.innerHTML = `You scored ${this.gameStats.score} points!`
         this.totalScores.style.fontSize = '2em'
 
         clearInterval(this.gameIntervalId)
