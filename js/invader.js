@@ -9,8 +9,8 @@ class Invader {
         }
 
         this.dimensions = {
-            width: 60,
-            height: 50
+            width: 70,
+            height: 80
         }
 
         this.velocity = {
