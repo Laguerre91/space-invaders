@@ -36,9 +36,6 @@ class Game {
         this.gameLoopFrequency = Math.round(1000 / 60);
         this.topVelCounter = 0
         this.leftVelCounter = 0
-
-        console.log(this.leftVelCounter)
-
     }
 
     start() {
@@ -78,23 +75,21 @@ class Game {
     }
 
     updateStats() {
-
         this.scoreScreen.innerHTML = this.gameStats.score
-
     }
 
     startCountdown() {
         const countdownTimer = new CountdownTimer(
             this.gameStats.timeRemaining,
             (remainingTime) => {
-                const minutes = Math.floor(remainingTime / 60).toString().padStart(2, "0");
-                const seconds = (remainingTime % 60).toString().padStart(2, "0");
-                this.timeScreen.innerHTML = `${minutes}:${seconds}`;
+                const minutes = Math.floor(remainingTime / 60).toString().padStart(2, "0")
+                const seconds = (remainingTime % 60).toString().padStart(2, "0")
+                this.timeScreen.innerHTML = `${minutes}:${seconds}`
             },
             () => {
                 this.endView()
             }
-        );
+        )
     }
 
     checkBottomReach() {
@@ -119,20 +114,20 @@ class Game {
         invadersData.forEach(data => {
             const invader = new Invader(
                 this.gameScreen,
-                "./img/invader.png",
+                data.imgSource,
                 data.top,
                 data.left,
                 data.topVel,
                 data.leftVel,
-            );
-            this.invaders.push(invader);
-        });
+            )
+            this.invaders.push(invader)
+        })
     }
 
     handleMouseMove(event) {
         if (this.player) {
-            const mouseX = event.clientX;
-            this.player.move(mouseX);
+            const mouseX = event.clientX
+            this.player.move(mouseX)
         }
     }
 
@@ -186,20 +181,18 @@ class Game {
 
             if (this.invaders.length === 2) {
                 this.createMoreEnemies(newInvadersData)
+                this.updateVelocity(newInvadersData)
             }
+
         }
     }
 
     updateVelocity(newInvadersData) {
 
-        for (let i = 0; i < newInvadersData.length; i++) {
-
-            newInvadersData.topVel += this.topVelCounter;
-            newInvadersData.leftVel += this.leftVelCounter;
-            console.log("updateVelocity works");
-
-        }
-
+        newInvadersData.forEach((invaderData) => {
+            invaderData.topVel += 0.2;
+            invaderData.leftVel += 0.5;
+        })
 
     }
 
@@ -222,11 +215,20 @@ class Game {
                 data.topVel,
                 data.leftVel,
             )
-            this.updateVelocity(newInvadersData)
             this.invaders.push(invader)
         })
 
-        this.gameStats.timeRemaining += 10
+        this.addTimeBonus(() => {
+            this.gameStats.timeRemaining += 5
+        })
+    }
+
+    addTimeBonus(callback) {
+        if (callback) {
+            callback()
+            console.log("Time bonus added!")
+            console.log(`${this.gameStats.timeRemaining}`)
+        }
     }
 
     removeBullet(bullet) {
