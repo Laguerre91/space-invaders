@@ -176,7 +176,6 @@ class Game {
             if (this.checkCollision(invader, bullet)) {
 
                 this.gameStats.score += 10;
-                console.log("10 points");
 
                 this.invaders.splice(i, 1)
 
@@ -253,7 +252,7 @@ class Game {
         this.endScreen.style.display = "flex"
 
         this.endTitleScreen.innerHTML = "GAME OVER. TRY AGAIN!"
-        this.totalScores.innerHTML = `You made ${this.gameStats.score} points`
+        this.totalScores.innerHTML = `You scored ${this.gameStats.score} points`
         this.totalScores.style.fontSize = '2em'
 
         clearInterval(this.gameIntervalId)
